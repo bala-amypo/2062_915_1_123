@@ -17,6 +17,8 @@ public class SearchQueryRecord {
 
     private String query;
 
+    private int resultsCount;   // ✅ REQUIRED BY TESTS
+
     private Timestamp searchedAt;
 
     @PrePersist
@@ -40,6 +42,14 @@ public class SearchQueryRecord {
 
     public void setQuery(String query) {
         this.query = query;
+    }
+
+    public int getResultsCount() {   // ✅ REQUIRED
+        return resultsCount;
+    }
+
+    public void setResultsCount(int resultsCount) {   // ✅ REQUIRED
+        this.resultsCount = resultsCount;
     }
 
     public Timestamp getSearchedAt() {
