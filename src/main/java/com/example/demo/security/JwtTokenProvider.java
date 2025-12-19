@@ -17,19 +17,18 @@ public class JwtTokenProvider {
     }
 
     public Claims getClaims(String token) {
-        return Jwts.parser().setSigningKey(secret)
-                .parseClaimsJws(token).getBody();
+        return null
     }
 
     public String getEmailFromToken(String token) {
-        return getClaims(token).get("email", String.class);
+        return "";
     }
 
     public Long getUserIdFromToken(String token) {
-        return getClaims(token).get("userId", Long.class);
+        return null;
     }
 
     public String getRoleFromToken(String token) {
-        return getClaims(token).get("role", String.class);
+        return "";
     }
 }
