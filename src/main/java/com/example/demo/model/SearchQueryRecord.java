@@ -15,10 +15,9 @@ public class SearchQueryRecord {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String query;
-
-    private int resultsCount;   // ✅ REQUIRED BY TESTS
-
+    private Long searcherId;          // ✅ REQUIRED
+    private String skillsRequested;   // ✅ REQUIRED
+    private int resultsCount;         // ✅ REQUIRED
     private Timestamp searchedAt;
 
     @PrePersist
@@ -26,7 +25,7 @@ public class SearchQueryRecord {
         this.searchedAt = new Timestamp(System.currentTimeMillis());
     }
 
-    // ---------- Getters & Setters ----------
+    // -------- Getters & Setters --------
 
     public Long getId() {
         return id;
@@ -36,19 +35,27 @@ public class SearchQueryRecord {
         this.id = id;
     }
 
-    public String getQuery() {
-        return query;
+    public Long getSearcherId() {
+        return searcherId;
     }
 
-    public void setQuery(String query) {
-        this.query = query;
+    public void setSearcherId(Long searcherId) {   // ✅ FIX
+        this.searcherId = searcherId;
     }
 
-    public int getResultsCount() {   // ✅ REQUIRED
+    public String getSkillsRequested() {
+        return skillsRequested;
+    }
+
+    public void setSkillsRequested(String skillsRequested) {   // ✅ FIX
+        this.skillsRequested = skillsRequested;
+    }
+
+    public int getResultsCount() {
         return resultsCount;
     }
 
-    public void setResultsCount(int resultsCount) {   // ✅ REQUIRED
+    public void setResultsCount(int resultsCount) {
         this.resultsCount = resultsCount;
     }
 
