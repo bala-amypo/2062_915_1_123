@@ -1,25 +1,24 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import java.sql.Timestamp;
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Entity
 public class SearchQueryRecord {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long searchId;
+    private Long searcherId;
     private String skillsRequested;
-    private Integer resultsCount;
-    private Timestamp searchedAt;
+    private Integer resultsCount = 0;
+    private LocalDateTime searchedAt;
 
     @PrePersist
     public void onCreate() {
-        searchedAt = Timestamp.from(Instant.now());
+        searchedAt = LocalDateTime.now();
+        if (resultsCount == null) resultsCount = 0;
     }
 
-    // getters and setters
+    // getters & setters
 }

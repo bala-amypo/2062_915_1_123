@@ -5,8 +5,7 @@ import jakarta.persistence.*;
 @Entity
 public class EmployeeSkill {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
@@ -19,5 +18,5 @@ public class EmployeeSkill {
     private Integer yearsOfExperience;
     private Boolean active = true;
 
-    // getters and setters
+    // getters & setters
 }

@@ -1,14 +1,12 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import java.sql.Timestamp;
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Entity
 public class Employee {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String fullName;
@@ -16,22 +14,21 @@ public class Employee {
     @Column(unique = true)
     private String email;
 
-    private String department;
-    private String jobTitle;
     private Boolean active = true;
 
-    private Timestamp createdAt;
-    private Timestamp updatedAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     @PrePersist
     public void onCreate() {
-        createdAt = Timestamp.from(Instant.now());
+        createdAt = LocalDateTime.now();
     }
 
     @PreUpdate
     public void onUpdate() {
-        updatedAt = Timestamp.from(Instant.now());
+        updatedAt = LocalDateTime.now();
     }
 
-    // getters and setters
+    // getters & setters
+    // (generate all)
 }
