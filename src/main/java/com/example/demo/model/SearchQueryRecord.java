@@ -1,8 +1,3 @@
-package com.example.demo.model;
-
-import jakarta.persistence.*;
-import java.time.LocalDateTime;
-
 @Entity
 public class SearchQueryRecord {
 
@@ -10,33 +5,30 @@ public class SearchQueryRecord {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long searcherId;
-    private String skillsRequested;
-    private Integer resultsCount = 0;
-    private LocalDateTime searchedAt;
+    private String query;
+
+    private Timestamp searchedAt;
 
     @PrePersist
     public void onCreate() {
-        searchedAt = LocalDateTime.now();
-        if (resultsCount == null) resultsCount = 0;
+        this.searchedAt = new Timestamp(System.currentTimeMillis());
     }
 
-    public Long getId() { return id; }
+    // REQUIRED GETTERS & SETTERS
 
-    public Long getSearcherId() { return searcherId; }
-    public void setSearcherId(Long searcherId) {
-        this.searcherId = searcherId;
+    public Long getId() {
+        return id;
     }
 
-    public String getSkillsRequested() { return skillsRequested; }
-    public void setSkillsRequested(String skillsRequested) {
-        this.skillsRequested = skillsRequested;
+    public void setId(Long id) {        // ✅ THIS FIXES THE ERROR
+        this.id = id;
     }
 
-    public Integer getResultsCount() { return resultsCount; }
-    public void setResultsCount(Integer resultsCount) {
-        this.resultsCount = resultsCount;
+    public Timestamp getSearchedAt() {
+        return searchedAt;
     }
 
-    public LocalDateTime getSearchedAt() { return searchedAt; }
+    public void setSearchedAt(Timestamp searchedAt) {
+        this.searchedAt = searchedAt;
+    }
 }
