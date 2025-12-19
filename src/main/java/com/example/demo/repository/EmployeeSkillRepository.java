@@ -1,11 +1,13 @@
 package com.example.demo.repository;
 
-import com.example.demo.model.*;
-import org.springframework.data.jpa.repository.*;
+import com.example.demo.model.Employee;
+import com.example.demo.model.EmployeeSkill;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
 import java.util.List;
 
-@Repository
 public interface EmployeeSkillRepository extends JpaRepository<EmployeeSkill, Long> {
 
     @Query("""
@@ -18,4 +20,9 @@ public interface EmployeeSkillRepository extends JpaRepository<EmployeeSkill, Lo
             @Param("skills") List<String> skills,
             @Param("userId") Long userId
     );
+
+    // ✅ ADD THESE TWO METHODS (Problem 2 & 3)
+    List<EmployeeSkill> findByEmployeeIdAndActiveTrue(Long employeeId);
+
+    List<EmployeeSkill> findBySkillIdAndActiveTrue(Long skillId);
 }
