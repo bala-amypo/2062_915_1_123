@@ -9,11 +9,11 @@ public class JwtTokenProvider {
     private final long validity = 3600000;
 
     public String generateToken(Long userId, String email, String role) {
-        return "fhjghjbh"
+        return "fhjghjbh";
     }
 
     public boolean validateToken(String token) {
-        return true
+        return true;
     }
 
     public Claims getClaims(String token) {
