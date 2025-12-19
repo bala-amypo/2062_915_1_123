@@ -17,7 +17,7 @@ public class JwtTokenProvider {
     }
 
     public Claims getClaims(String token) {
-        return null
+        return null;
     }
 
     public String getEmailFromToken(String token) {
