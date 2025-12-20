@@ -1,5 +1,6 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.model.Employee;
 import com.example.demo.model.EmployeeSkill;
 import com.example.demo.repository.EmployeeSkillRepository;
 import com.example.demo.service.EmployeeSkillService;
@@ -12,7 +13,6 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
 
     private final EmployeeSkillRepository employeeSkillRepository;
 
-    // ✅ SINGLE constructor + final field = Spring will autowire automatically
     public EmployeeSkillServiceImpl(EmployeeSkillRepository employeeSkillRepository) {
         this.employeeSkillRepository = employeeSkillRepository;
     }
@@ -25,14 +25,23 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
 
     @Override
     public List<EmployeeSkill> getSkillsForEmployee(Long employeeId) {
-        return employeeSkillRepository.findByEmployeeIdAndActiveTrue(employeeId);
+        return employeeSkillRepository.findByEmployee_IdAndActiveTrue(employeeId);
     }
 
     @Override
     public void deactivateEmployeeSkill(Long id) {
-        EmployeeSkill skill = employeeSkillRepository.findById(id)
+        EmployeeSkill es = employeeSkillRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("EmployeeSkill not found"));
-        skill.setActive(false);
-        employeeSkillRepository.save(skill);
+        es.setActive(false);
+        employeeSkillRepository.save(es);
+    }
+
+    // ✅ THIS WAS MISSING
+    @Override
+    public List<Employee> searchEmployeesBySkills(List<String> skills, Long requesterId) {
+        return employeeSkillRepository.findEmployeesByAllSkillNames(
+                skills,
+                skills.size()
+        );
     }
 }
