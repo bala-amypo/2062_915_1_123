@@ -4,26 +4,18 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.PrePersist;
-
-import java.sql.Timestamp;
 
 @Entity
-public class SearchQueryRecord {
+public class Skill {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long searcherId;          // ✅ REQUIRED
-    private String skillsRequested;   // ✅ REQUIRED
-    private int resultsCount;         // ✅ REQUIRED
-    private Timestamp searchedAt;
-
-    @PrePersist
-    public void onCreate() {
-        this.searchedAt = new Timestamp(System.currentTimeMillis());
-    }
+    private String name;
+    private String category;
+    private String description;
+    private boolean active = true;
 
     // -------- Getters & Setters --------
 
@@ -35,35 +27,35 @@ public class SearchQueryRecord {
         this.id = id;
     }
 
-    public Long getSearcherId() {
-        return searcherId;
+    public String getName() {
+        return name;
     }
 
-    public void setSearcherId(Long searcherId) {   // ✅ FIX
-        this.searcherId = searcherId;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getSkillsRequested() {
-        return skillsRequested;
+    public String getCategory() {
+        return category;
     }
 
-    public void setSkillsRequested(String skillsRequested) {   // ✅ FIX
-        this.skillsRequested = skillsRequested;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
-    public int getResultsCount() {
-        return resultsCount;
+    public String getDescription() {
+        return description;
     }
 
-    public void setResultsCount(int resultsCount) {
-        this.resultsCount = resultsCount;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public Timestamp getSearchedAt() {
-        return searchedAt;
+    public boolean isActive() {
+        return active;
     }
 
-    public void setSearchedAt(Timestamp searchedAt) {
-        this.searchedAt = searchedAt;
+    public void setActive(boolean active) {   // REQUIRED
+        this.active = active;
     }
 }
