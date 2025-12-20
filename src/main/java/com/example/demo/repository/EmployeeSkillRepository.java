@@ -4,23 +4,30 @@ import com.example.demo.model.Employee;
 import com.example.demo.model.EmployeeSkill;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
 public interface EmployeeSkillRepository extends JpaRepository<EmployeeSkill, Long> {
 
-    List<EmployeeSkill> findByEmployee_IdAndActiveTrue(Long employeeId);
+    // ✅ Used by EmployeeSkillServiceImpl + tests
+    List<EmployeeSkill> findByEmployeeIdAndActiveTrue(Long employeeId);
 
-    List<EmployeeSkill> findBySkill_IdAndActiveTrue(Long skillId);
+    // ✅ Used by EmployeeSkillServiceImpl + tests
+    List<EmployeeSkill> findBySkillIdAndActiveTrue(Long skillId);
 
-    // 🔑 CORRECT JPQL QUERY (NO method-name magic)
+    // ✅ Used by SearchQueryServiceImpl + tests
     @Query("""
-        SELECT es.employee
+        SELECT DISTINCT es.employee
         FROM EmployeeSkill es
         WHERE es.skill.name IN :skills
-        AND es.active = true
+          AND es.active = true
+          AND (:userId IS NULL OR es.employee.id <> :userId)
         GROUP BY es.employee
-        HAVING COUNT(DISTINCT es.skill.name) = :skillCount
+        HAVING COUNT(DISTINCT es.skill.name) = :#{#skills.size()}
     """)
-    List<Employee> findEmployeesByAllSkillNames(List<String> skills, long skillCount);
+    List<Employee> findEmployeesByAllSkillNames(
+            @Param("skills") List<String> skills,
+            @Param("userId") Long userId
+    );
 }
