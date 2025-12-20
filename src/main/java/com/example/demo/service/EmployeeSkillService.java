@@ -13,7 +13,8 @@ public interface EmployeeSkillService {
 
     List<EmployeeSkill> getEmployeesBySkill(Long skillId);
 
-    List<Employee> searchEmployeesBySkills(List<String> skills, Long userId);
+    void deactivateEmployeeSkill(Long id);
 
-    void deactivateEmployeeSkill(Long employeeSkillId);
+    // 🔑 THIS MUST RETURN Employee
+    List<Employee> searchEmployeesBySkills(List<String> skills, Long requesterId);
 }

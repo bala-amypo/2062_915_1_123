@@ -1,5 +1,6 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.model.Employee;
 import com.example.demo.model.EmployeeSkill;
 import com.example.demo.repository.EmployeeSkillRepository;
 import com.example.demo.service.EmployeeSkillService;
@@ -28,6 +29,11 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
     }
 
     @Override
+    public List<EmployeeSkill> getEmployeesBySkill(Long skillId) {
+        return employeeSkillRepository.findBySkill_IdAndActiveTrue(skillId);
+    }
+
+    @Override
     public void deactivateEmployeeSkill(Long id) {
         EmployeeSkill es = employeeSkillRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("EmployeeSkill not found"));
@@ -35,13 +41,12 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
         employeeSkillRepository.save(es);
     }
 
+    // ✅ NOW MATCHES INTERFACE PERFECTLY
     @Override
-    public List<EmployeeSkill> getEmployeesBySkill(Long skillId) {
-        return employeeSkillRepository.findBySkill_IdAndActiveTrue(skillId);
-    }
-
-    @Override
-    public List<EmployeeSkill> searchEmployeesBySkills(List<String> skills, Long requesterId) {
-        return employeeSkillRepository.findBySkill_NameInAndActiveTrue(skills);
+    public List<Employee> searchEmployeesBySkills(List<String> skills, Long requesterId) {
+        return employeeSkillRepository.findEmployeesByAllSkillNames(
+                skills,
+                skills.size()
+        );
     }
 }
