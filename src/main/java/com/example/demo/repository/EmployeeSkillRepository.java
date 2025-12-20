@@ -10,14 +10,14 @@ import java.util.List;
 
 public interface EmployeeSkillRepository extends JpaRepository<EmployeeSkill, Long> {
 
-    
+    @Query("""
+        SELECT DISTINCT es.employee
+        FROM EmployeeSkill es
+        WHERE es.skill.name IN :skills
+        AND (:userId IS NULL OR es.employee.id <> :userId)
+    """)
     List<Employee> findEmployeesByAllSkillNames(
             @Param("skills") List<String> skills,
             @Param("userId") Long userId
     );
-
-    // ✅ ADD THESE TWO METHODS (Problem 2 & 3)
-    List<EmployeeSkill> findByEmployeeIdAndActiveTrue(Long employeeId);
-
-    List<EmployeeSkill> findBySkillIdAndActiveTrue(Long skillId);
 }
