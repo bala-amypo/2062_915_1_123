@@ -13,6 +13,7 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
 
     private final EmployeeSkillRepository repo;
 
+    // ✅ MATCHES TEST CONSTRUCTOR EXACTLY
     public EmployeeSkillServiceImpl(EmployeeSkillRepository repo) {
         this.repo = repo;
     }
