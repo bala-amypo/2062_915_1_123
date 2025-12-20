@@ -1,10 +1,7 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.model.Employee;
 import com.example.demo.model.EmployeeSkill;
-import com.example.demo.repository.EmployeeRepository;
 import com.example.demo.repository.EmployeeSkillRepository;
-import com.example.demo.repository.SkillRepository;
 import com.example.demo.service.EmployeeSkillService;
 import org.springframework.stereotype.Service;
 
@@ -14,25 +11,15 @@ import java.util.List;
 public class EmployeeSkillServiceImpl implements EmployeeSkillService {
 
     private final EmployeeSkillRepository employeeSkillRepository;
-    private final EmployeeRepository employeeRepository;
-    private final SkillRepository skillRepository;
 
-    // ✅ REQUIRED BY TESTS
-    public EmployeeSkillServiceImpl(EmployeeSkillRepository employeeSkillRepository,
-                                    EmployeeRepository employeeRepository,
-                                    SkillRepository skillRepository) {
-        this.employeeSkillRepository = employeeSkillRepository;
-        this.employeeRepository = employeeRepository;
-        this.skillRepository = skillRepository;
-    }
-
-    // ✅ REQUIRED BY SPRING (AUTOWIRING)
+    // ✅ SINGLE constructor + final field = Spring will autowire automatically
     public EmployeeSkillServiceImpl(EmployeeSkillRepository employeeSkillRepository) {
-        this(employeeSkillRepository, null, null);
+        this.employeeSkillRepository = employeeSkillRepository;
     }
 
     @Override
     public EmployeeSkill createEmployeeSkill(EmployeeSkill employeeSkill) {
+        employeeSkill.setActive(true);
         return employeeSkillRepository.save(employeeSkill);
     }
 
@@ -42,20 +29,10 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
     }
 
     @Override
-    public List<EmployeeSkill> getEmployeesBySkill(Long skillId) {
-        return employeeSkillRepository.findBySkillIdAndActiveTrue(skillId);
-    }
-
-    @Override
-    public List<Employee> searchEmployeesBySkills(List<String> skills, Long userId) {
-        return employeeSkillRepository.findEmployeesByAllSkillNames(skills, userId);
-    }
-
-    @Override
-    public void deactivateEmployeeSkill(Long employeeSkillId) {
-        EmployeeSkill es = employeeSkillRepository.findById(employeeSkillId)
+    public void deactivateEmployeeSkill(Long id) {
+        EmployeeSkill skill = employeeSkillRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("EmployeeSkill not found"));
-        es.setActive(false);
-        employeeSkillRepository.save(es);
+        skill.setActive(false);
+        employeeSkillRepository.save(skill);
     }
 }
