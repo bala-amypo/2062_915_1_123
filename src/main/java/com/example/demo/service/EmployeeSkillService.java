@@ -7,6 +7,10 @@ import java.util.List;
 
 public interface EmployeeSkillService {
 
+    EmployeeSkill createEmployeeSkill(EmployeeSkill employeeSkill);
+
+    void deactivateEmployeeSkill(Long employeeSkillId);
+
     List<EmployeeSkill> getSkillsForEmployee(Long employeeId);
 
     List<EmployeeSkill> getEmployeesBySkill(Long skillId);

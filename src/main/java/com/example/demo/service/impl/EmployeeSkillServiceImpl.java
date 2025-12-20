@@ -19,6 +19,22 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
     }
 
     @Override
+    public EmployeeSkill createEmployeeSkill(EmployeeSkill employeeSkill) {
+        employeeSkill.setActive(true);
+        return employeeSkillRepository.save(employeeSkill);
+    }
+
+    @Override
+    public void deactivateEmployeeSkill(Long employeeSkillId) {
+        EmployeeSkill skill = employeeSkillRepository
+                .findById(employeeSkillId)
+                .orElseThrow(() -> new RuntimeException("EmployeeSkill not found"));
+
+        skill.setActive(false);
+        employeeSkillRepository.save(skill);
+    }
+
+    @Override
     public List<EmployeeSkill> getSkillsForEmployee(Long employeeId) {
         return employeeSkillRepository.findByEmployeeIdAndActiveTrue(employeeId);
     }
@@ -30,6 +46,9 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
 
     @Override
     public List<Employee> searchEmployeesBySkills(List<String> skillNames, Long userId) {
-        return employeeSkillRepository.findEmployeesByAllSkillNames(skillNames, userId);
+        return employeeSkillRepository.findEmployeesByAllSkillNames(
+                skillNames,
+                skillNames.size()
+        );
     }
 }
