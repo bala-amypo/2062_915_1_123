@@ -18,7 +18,12 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
     }
 
     @Override
-    public List<EmployeeSkill> getSkillsByEmployee(Long employeeId) {
+    public EmployeeSkill createEmployeeSkill(EmployeeSkill employeeSkill) {
+        return repo.save(employeeSkill);
+    }
+
+    @Override
+    public List<EmployeeSkill> getSkillsForEmployee(Long employeeId) {
         return repo.findByEmployeeIdAndActiveTrue(employeeId);
     }
 
@@ -36,7 +41,6 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
     public void deactivateEmployeeSkill(Long employeeSkillId) {
         EmployeeSkill es = repo.findById(employeeSkillId)
                 .orElseThrow(() -> new RuntimeException("EmployeeSkill not found"));
-
         es.setActive(false);
         repo.save(es);
     }
