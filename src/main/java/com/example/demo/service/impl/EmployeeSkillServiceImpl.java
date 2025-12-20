@@ -31,4 +31,13 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
     public List<Employee> searchEmployeesBySkills(List<String> skills, Long userId) {
         return repo.findEmployeesByAllSkillNames(skills, userId);
     }
+
+    @Override
+    public void deactivateEmployeeSkill(Long employeeSkillId) {
+        EmployeeSkill es = repo.findById(employeeSkillId)
+                .orElseThrow(() -> new RuntimeException("EmployeeSkill not found"));
+
+        es.setActive(false);
+        repo.save(es);
+    }
 }
