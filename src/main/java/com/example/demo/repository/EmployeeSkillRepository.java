@@ -10,6 +10,10 @@ import java.util.List;
 
 public interface EmployeeSkillRepository extends JpaRepository<EmployeeSkill, Long> {
 
+    List<EmployeeSkill> findByEmployeeIdAndActiveTrue(Long employeeId);
+
+    List<EmployeeSkill> findBySkillIdAndActiveTrue(Long skillId);
+
     @Query("""
         SELECT DISTINCT es.employee
         FROM EmployeeSkill es
