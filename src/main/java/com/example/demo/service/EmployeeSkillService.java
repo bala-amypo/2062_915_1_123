@@ -7,14 +7,9 @@ import java.util.List;
 
 public interface EmployeeSkillService {
 
-    EmployeeSkill createEmployeeSkill(EmployeeSkill employeeSkill);
-
     List<EmployeeSkill> getSkillsForEmployee(Long employeeId);
 
     List<EmployeeSkill> getEmployeesBySkill(Long skillId);
 
-    void deactivateEmployeeSkill(Long id);
-
-    // 🔑 THIS MUST RETURN Employee
-    List<Employee> searchEmployeesBySkills(List<String> skills, Long requesterId);
+    List<Employee> searchEmployeesBySkills(List<String> skillNames, Long userId);
 }

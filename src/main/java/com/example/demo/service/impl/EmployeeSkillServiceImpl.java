@@ -1,3 +1,14 @@
+package com.example.demo.service.impl;
+
+import com.example.demo.model.Employee;
+import com.example.demo.model.EmployeeSkill;
+import com.example.demo.repository.EmployeeSkillRepository;
+import com.example.demo.service.EmployeeSkillService;
+
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
 @Service
 public class EmployeeSkillServiceImpl implements EmployeeSkillService {
 
@@ -18,7 +29,7 @@ public class EmployeeSkillServiceImpl implements EmployeeSkillService {
     }
 
     @Override
-    public List<Employee> searchEmployeesBySkills(List<String> skills, Long userId) {
-        return employeeSkillRepository.findEmployeesByAllSkillNames(skills, userId);
+    public List<Employee> searchEmployeesBySkills(List<String> skillNames, Long userId) {
+        return employeeSkillRepository.findEmployeesByAllSkillNames(skillNames, userId);
     }
 }
