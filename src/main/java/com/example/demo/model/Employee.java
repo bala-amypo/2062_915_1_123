@@ -30,8 +30,6 @@ public class Employee {
         updatedAt = LocalDateTime.now();
     }
 
-    // -------- GETTERS & SETTERS --------
-
     public Long getId() {
         return id;
     }
