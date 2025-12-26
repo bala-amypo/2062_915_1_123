@@ -10,12 +10,8 @@ import java.util.Date;
 @Component
 public class JwtTokenProvider {
 
-    private static final String SECRET =
-            "my-secret-key-my-secret-key-my-secret-key-12345";
-
-    private static final long EXPIRATION = 86400000; // 1 day
-
-    private final Key key = Keys.hmacShaKeyFor(SECRET.getBytes());
+    private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    private final long validity = 86400000; // 1 day
 
     public String generateToken(Long userId, String email, String role) {
         return Jwts.builder()
@@ -23,8 +19,8 @@ public class JwtTokenProvider {
                 .claim("userId", userId)
                 .claim("role", role)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION))
-                .signWith(key, SignatureAlgorithm.HS256)
+                .setExpiration(new Date(System.currentTimeMillis() + validity))
+                .signWith(key)
                 .compact();
     }
 
