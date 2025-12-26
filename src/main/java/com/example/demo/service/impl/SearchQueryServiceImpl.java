@@ -16,9 +16,9 @@ public class SearchQueryServiceImpl implements SearchQueryService {
     private final SearchQueryRecordRepository searchQueryRecordRepository;
     private final EmployeeSkillRepository employeeSkillRepository;
 
-    public SearchQueryServiceImpl(SearchQueryRecordRepository searchQueryRecordRepository,
+    public SearchQueryServiceImpl(SearchQueryRecordRepository repo,
                                   EmployeeSkillRepository employeeSkillRepository) {
-        this.searchQueryRecordRepository = searchQueryRecordRepository;
+        this.searchQueryRecordRepository = repo;
         this.employeeSkillRepository = employeeSkillRepository;
     }
 
@@ -26,7 +26,7 @@ public class SearchQueryServiceImpl implements SearchQueryService {
     public List<Employee> searchEmployeesBySkills(List<String> skills, Long userId) {
 
         if (skills == null || skills.isEmpty()) {
-            throw new IllegalArgumentException("skills must not be empty");
+            throw new IllegalArgumentException("Skills list must not be empty");
         }
 
         List<String> normalized = skills.stream()
@@ -59,5 +59,10 @@ public class SearchQueryServiceImpl implements SearchQueryService {
     @Override
     public List<SearchQueryRecord> getQueriesForUser(Long userId) {
         return searchQueryRecordRepository.findBySearcherId(userId);
+    }
+
+    @Override
+    public void saveQuery(SearchQueryRecord record) {
+        searchQueryRecordRepository.save(record);
     }
 }
