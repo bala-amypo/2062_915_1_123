@@ -4,40 +4,50 @@ import com.example.demo.model.Employee;
 import com.example.demo.repository.EmployeeRepository;
 import com.example.demo.service.EmployeeService;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
-    private final EmployeeRepository repo;
+    private final EmployeeRepository employeeRepository;
 
-    public EmployeeServiceImpl(EmployeeRepository repo) {
-        this.repo = repo;
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
     }
 
-    public Employee createEmployee(Employee e) {
-        return repo.save(e);
+    @Override
+    public Employee createEmployee(Employee employee) {
+        employee.setActive(true);
+        return employeeRepository.save(employee);
     }
 
-    public Employee updateEmployee(Long id, Employee e) {
-        Employee existing = repo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Employee not found"));
-        e.setId(existing.getId());
-        return repo.save(e);
+    @Override
+    public Employee updateEmployee(Long id, Employee employee) {
+        Employee existing = employeeRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Employee not found"));
+
+        existing.setFullName(employee.getFullName());
+        existing.setEmail(employee.getEmail());
+        return employeeRepository.save(existing);
     }
 
+    @Override
     public Employee getEmployeeById(Long id) {
-        return repo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Employee not found"));
+        return employeeRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Employee not found"));
     }
 
+    @Override
     public List<Employee> getAllEmployees() {
-        return repo.findAll();
+        return employeeRepository.findAll();
     }
 
+    @Override
     public void deactivateEmployee(Long id) {
-        Employee e = getEmployeeById(id);
-        e.setActive(false);
-        repo.save(e);
+        Employee emp = employeeRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Employee not found"));
+        emp.setActive(false);
+        employeeRepository.save(emp);
     }
 }
