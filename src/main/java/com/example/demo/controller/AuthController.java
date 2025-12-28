@@ -1,36 +1,55 @@
-// package com.example.demo.controller;
+package com.example.demo.controller;
 
-// import com.example.demo.dto.AuthRequest;
-// import com.example.demo.dto.AuthResponse;
-// import com.example.demo.dto.RegisterRequest;
-// import com.example.demo.service.UserService;
-// import org.springframework.http.ResponseEntity;
-// import org.springframework.web.bind.annotation.*;
+import com.example.demo.model.Employee;
+import com.example.demo.repository.EmployeeRepository;
+import com.example.demo.security.JwtTokenProvider;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-// @RestController
-// @RequestMapping("/auth")
-// public class AuthController {
+import java.util.HashMap;
+import java.util.Map;
 
-//     private final UserService userService;
+@RestController
+@RequestMapping("/auth")
+public class AuthController {
 
-//     public AuthController(UserService userService) {
-//         this.userService = userService;
-//     }
+    private final EmployeeRepository employeeRepository;
+    private final JwtTokenProvider jwtTokenProvider;
 
-//     @PostMapping("/register")
-//     public ResponseEntity<AuthResponse> register(
-//             @RequestBody RegisterRequest request) {
+    public AuthController(EmployeeRepository employeeRepository,
+                          JwtTokenProvider jwtTokenProvider) {
+        this.employeeRepository = employeeRepository;
+        this.jwtTokenProvider = jwtTokenProvider;
+    }
 
-//         AuthResponse response = userService.register(request);
-//         return ResponseEntity.ok(response);
-//     }
+    // 🔐 LOGIN (Swagger-friendly)
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody Map<String, String> request) {
 
-//     @PostMapping("/login")
-//     public ResponseEntity<AuthResponse> login(
-//             @RequestBody AuthRequest request) {
+        String email = request.get("email");
 
-//         AuthResponse response = userService.login(request);
-//         return ResponseEntity.ok(response);
-//     }
-// }
+        Employee employee = employeeRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Invalid email"));
 
+        String token = jwtTokenProvider.generateToken(
+                employee.getId(),
+                employee.getEmail(),
+                "USER"
+        );
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("token", token);
+        response.put("email", employee.getEmail());
+        response.put("userId", employee.getId());
+
+        return ResponseEntity.ok(response);
+    }
+
+    // (Optional) Register endpoint for completeness
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@RequestBody Employee employee) {
+        employee.setActive(true);
+        Employee saved = employeeRepository.save(employee);
+        return ResponseEntity.ok(saved);
+    }
+}
